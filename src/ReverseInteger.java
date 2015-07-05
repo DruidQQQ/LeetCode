@@ -2,8 +2,7 @@
  * Created by WangJQ on 2015/7/5.
  */
 public class ReverseInteger {
-
-    public static int reverse(int x) {
+    public int reverse(int x) {
         long result = 0L;
         int reminder;
 
@@ -17,9 +16,5 @@ public class ReverseInteger {
             return result > Integer.MAX_VALUE ? 0 : (int)result;
         else
             return result < Integer.MIN_VALUE ? 0 : (int) result;
-    }
-
-    public static void main(String args[]){
-        System.out.println(reverse(-2147483648));
     }
 }
