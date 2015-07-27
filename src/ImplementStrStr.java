@@ -2,31 +2,49 @@
  * Created by WangJQ on 2015/7/10.
  */
 public class ImplementStrStr {
-    public int strStr(String haystack, String needle) {
-        if(haystack == null || needle == null)
-            return -1;
-        if(needle.length() > haystack.length())
-            return needle.length() == 0 ? 0 : -1;
-        if(needle.length() == 0)
+    public static int strStr(String haystack, String needle) {
+        int i = 0, j = 0, n = haystack.length(), m = needle.length();
+
+        if (m == 0)
             return 0;
 
-        int index = -1, j;
-        for(int i = 0; i < haystack.length(); i++) {
-            if(haystack.charAt(i) == needle.charAt(0)) {
-                index = i;
-                for(j = 0; j < needle.length(); j++) {
-                    if((i + j) < haystack.length()) {
-                        if (haystack.charAt(i + j) != needle.charAt(j))
-                            break;
-                    }
-                }
-                if(index > 0 && j == (needle.length() - 1))
-                    return index;
-                else
-                    index = -1;
+        int[] lps = getLPS(needle, m);
+
+        while (i < n) {
+            if (haystack.charAt(i) == needle.charAt(j)) {
+                i++; j++;
+                // found the needle in haystack!
+                if (j == m)
+                    return i - m;
+            } else if (j > 0) {
+                j = lps[j - 1];
+            } else {
+                i++;
             }
         }
 
-        return index;
+        return -1;
+    }
+
+    // KMP get the longest prefix and suffix
+    static int[] getLPS(String s, int n) {
+        int i = 1, len = 0;
+        int[] lps = new int[n];
+
+        while (i < n) {
+            if (s.charAt(i) == s.charAt(len)) {
+                lps[i++] = ++len;
+            } else if (len == 0) {
+                lps[i++] = 0;
+            } else {
+                len = lps[len - 1];
+            }
+        }
+
+        return lps;
+    }
+
+    public static void main(String args[]) {
+        System.out.println(strStr("mississippi", "issip"));
     }
 }
